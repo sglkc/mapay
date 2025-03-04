@@ -2,9 +2,10 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "tsx server/api.ts",
+		"dev": "vite",
+		"dev:server": "tsx watch --clear-screen=false --tsconfig=server/tsconfig.json server/api.ts",
 		"build": "vite build && tsc --project server/tsconfig.json",
-		"preview": "vite preview"
+		"preview": "NODE_ENV=production tsx server/vite.ts"
 	},
 	"dependencies": {
 		"@unocss/reset": "66.1.0-beta.3",

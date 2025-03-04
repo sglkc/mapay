@@ -1,8 +1,9 @@
 import 'dotenv/config'
+import { fileURLToPath } from 'node:url'
 import express from 'express'
-import ViteExpress from 'vite-express'
 import UserRouter from './routes/user'
 
+const PORT = Number(process.env.PORT) || 5000
 const app = express()
 
 app.use(express.json())
@@ -11,4 +12,8 @@ app.use(UserRouter)
 
 app.get('/message', (_, res) => void res.send('Hello from express!'))
 
-ViteExpress.listen(app, 5173, () => console.log('Server is listening...'))
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
+}
+
+export default app
