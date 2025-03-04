@@ -3,13 +3,14 @@
 	"type": "module",
 	"scripts": {
 		"dev": "tsx api/server.ts",
-		"build": "vite build && tsc --project api/tsconfig.json",
+		"build": "vite build && tsc --project server/tsconfig.json",
 		"preview": "vite preview"
 	},
 	"dependencies": {
 		"@unocss/reset": "66.1.0-beta.3",
 		"clsx": "^2.1.1",
 		"express": "^4.21.2",
+		"kysely": "^0.27.6",
 		"preact": "^10.25.3",
 		"preact-iso": "^2.9.1",
 		"vite-express": "^0.20.0"
