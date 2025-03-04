@@ -2,7 +2,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "tsx api/server.ts",
+		"dev": "tsx server/api.ts",
 		"build": "vite build && tsc --project server/tsconfig.json",
 		"preview": "vite preview"
 	},
