@@ -1,0 +1,34 @@
+- Download https://github.com/sapics/ip-location-db/tree/main/dbip-city/dbip-city-ipv4-num.csv.gz
+- Extract dengan gunzip/winrar/7zip (.gz)
+- Buat file database sqlite dan buka
+- Buat tabel baru
+
+create table ip_ranges(
+    ip_start INTEGER NOT NULL,
+    ip_end INTEGER NOT NULL,
+    country CHAR(2) NOT NULL,
+    city TEXT,
+    state1 TEXT,
+    state2 TEXT,
+    latitude REAL,
+    longitude REAL,
+    postcode TEXT,
+    timezone TEXT
+);
+
+- Ganti ke mode csv
+
+.mode csv
+
+- Impor csv
+
+.import dbip-city-ipv4-num.csv ip_ranges
+
+- Coba query ip (harus konversi ipv4 ke angka)
+
+select * from ip_ranges where <ip> BETWEEN ip_start AND ip_end;
+
+- Konversi ipv4 ke angka dengan php
+
+$ php -a
+> echo ip2long('160.19.226.156');
