@@ -53,6 +53,7 @@ class UserPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->topNavigation();
+            ->topNavigation()
+            ->darkMode(false);
     }
 }

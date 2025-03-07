@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,13 +14,13 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class, 'source_user_id');
+            $table->foreignIdFor(User::class, 'target_user_id');
             $table->decimal('spending', 12, 2);
-            $table->unsignedInteger('ip');
-            $table->string('city');
-            $table->string('state');
-            $table->decimal('lat', 8, 5);
-            $table->decimal('long', 8, 5);
-            $table->timestamp('created-at')->useCurrent();
+            $table->ipAddress('ip_address');
+            $table->decimal('latitude', 7, 4);
+            $table->decimal('longitude', 7, 4);
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
