@@ -19,6 +19,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -70,6 +71,14 @@ class TransactionResource extends Resource
 
                 TextInput::make('receiver_name')
                     ->label('Nama Penerima')
+                    ->afterStateHydrated(function (?Transaction $record, Set $set) {
+                        if (!$record?->receiver_user_id) return;
+
+                        /** @var User */
+                        $receiver = User::query()->find($record->receiver_user_id);
+
+                        $set('receiver_name', $receiver->name ?? null);
+                    })
                     ->placeholder(fn (Get $get) => $get('receiver_user_id')
                         ? 'Rekening tidak ditemukan'
                         : 'Nama penerima akan ditampilkan di sini'
@@ -144,22 +153,24 @@ class TransactionResource extends Resource
                     ->where('sender_user_id', Auth::user()->getAuthIdentifier())
             )
             ->columns([
+                TextColumn::make('created_at')
+                    ->label('Waktu')
+                    ->suffix(' WIB')
+                    ->dateTime('d F Y, H:i:s')
+                    ->timezone('Asia/Jakarta'),
+
                 TextColumn::make('receiver_user_id')
-                    ->label('Receiver ID'),
+                    ->label('Rekening Penerima'),
 
                 TextColumn::make('receiver.name')
-                    ->label('Receiver Name'),
+                    ->label('Nama Penerima'),
 
                 TextColumn::make('amount')
+                    ->label('Jumlah')
                     ->money('IDR'),
 
                 TextColumn::make('description')
                     ->label('Keterangan'),
-
-                TextColumn::make('created_at')
-                    ->suffix(' WIB')
-                    ->dateTime('d F Y, H:i:s')
-                    ->timezone('Asia/Jakarta'),
             ])
             ->filters([
                 //
