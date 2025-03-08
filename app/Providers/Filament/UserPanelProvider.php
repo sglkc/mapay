@@ -2,10 +2,12 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\User\Resources\TransactionResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -52,6 +54,12 @@ class UserPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->navigationItems([
+                NavigationItem::make('Transfer')
+                    ->icon('heroicon-o-plus-circle')
+                    // TODO
+                    ->url('/transactions/create')
             ])
             ->topNavigation()
             ->darkMode(false);
