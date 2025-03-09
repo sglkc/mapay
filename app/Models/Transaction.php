@@ -15,7 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $longitude
  * @property ?string $description
  * @property \Illuminate\Support\Carbon|null $created_at
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User $sender
+ * @property-read \App\Models\User $receiver
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction query()
  */
 class Transaction extends Model
