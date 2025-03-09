@@ -33,5 +33,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 'user'
         ]);
+
+        $getUserModel->invoke($makeUserCommand)::create([
+            'name' => 'merchant',
+            'email' => 'merchant@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'merchant'
+        ]);
     }
 }

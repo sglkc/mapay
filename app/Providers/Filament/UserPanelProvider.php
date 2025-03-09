@@ -18,13 +18,27 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class UserPanelProvider extends PanelProvider
 {
+    protected function getUserRole(): string
+    {
+        /**
+         * @var \App\Models\User
+         * @disregard
+         */
+        $user = auth()->user();
+
+        return $user->role;
+    }
+
     public function panel(Panel $panel): Panel
     {
+
         return $panel
+            ->default()
             ->id('user')
             ->path('/')
             ->login()
@@ -58,10 +72,11 @@ class UserPanelProvider extends PanelProvider
             ->navigationItems([
                 NavigationItem::make('Transfer')
                     ->icon('heroicon-o-plus-circle')
-                    // TODO
-                    ->url('/transactions/create')
+                    ->hidden(fn () => !TransactionResource::canCreate())
+                    ->url(fn () => TransactionResource::getUrl('create'))
             ])
-            ->topNavigation()
+            ->topNavigation(fn () => $this->getUserRole() !== 'admin')
+            ->sidebarCollapsibleOnDesktop()
             ->darkMode(false);
     }
 }
