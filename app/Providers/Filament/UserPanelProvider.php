@@ -75,7 +75,7 @@ class UserPanelProvider extends PanelProvider
                     ->hidden(fn () => !TransactionResource::canCreate())
                     ->url(fn () => TransactionResource::getUrl('create'))
             ])
-            ->topNavigation(fn () => $this->getUserRole() !== 'admin')
+            ->topNavigation(fn () => $this->getUserRole() !== 'admin' || $this->getUserRole() !== 'superadmin')
             ->sidebarCollapsibleOnDesktop()
             ->darkMode(false);
     }

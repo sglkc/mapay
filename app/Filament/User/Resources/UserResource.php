@@ -33,6 +33,14 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                /** @var \App\Models\User $user */
+                $user = auth()->user();
+
+                if ($user->role === 'admin') {
+                    $query->where('admin_id', $user->id);
+                }
+            })
             ->columns([
                 TextColumn::make('id')
                     ->label('ID')
@@ -61,6 +69,12 @@ class UserResource extends Resource
                     ->money('IDR', true)
                     ->formatStateUsing(fn ($state) => number_format($state, 2, ',', '.'))
                     ->prefix('IDR '),
+
+                TextColumn::make('admin_id')
+                    ->label('Nama Administrator')
+                    ->sortable()
+                    ->searchable()
+                    ->formatStateUsing(fn ($state) => User::find($state)?->name ?? '-'),
             ])
             ->filters([
                 //

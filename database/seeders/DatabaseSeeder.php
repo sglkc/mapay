@@ -20,19 +20,20 @@ class DatabaseSeeder extends Seeder
 
         $getUserModel->setAccessible(true);
 
-        $getUserModel->invoke($makeUserCommand)::create([
+        $superadmin = $getUserModel->invoke($makeUserCommand)::create([
             'name' => 'superadmin',
             'email' => 'superadmin@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'superadmin',
-            'balance' => 100000
+            'balance' => 10000000
         ]);
 
-        $getUserModel->invoke($makeUserCommand)::create([
+        $admin = $getUserModel->invoke($makeUserCommand)::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
+            'admin_id' => $superadmin->id,
             'balance' => 100000
         ]);
 
@@ -41,6 +42,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'user',
+            'admin_id' => $admin->id,
             'balance' => 100000
         ]);
 

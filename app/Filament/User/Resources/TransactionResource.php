@@ -153,11 +153,21 @@ class TransactionResource extends Resource
 
         return $table
             ->defaultSort('created_at', 'desc')
-            ->modifyQueryUsing(
-                fn (Builder $query) => $query
-                    ->where('sender_user_id', $userId)
-                    ->orwhere('receiver_user_id', $userId)
-            )
+            ->modifyQueryUsing(function (Builder $query) use ($user) {
+                if ($user->role === 'superadmin') return;
+
+                if ($user->role === 'admin') {
+                    $query->whereHas('sender', function ($senderQuery) use ($user) {
+                        $senderQuery->where('admin_id', $user->id);
+                    });
+
+                    return;
+                }
+
+                $query
+                    ->where('sender_user_id', $user->id)
+                    ->orWhere('receiver_user_id', $user->id);
+            })
             ->columns([
                 IconColumn::make('receiver_user_id')
                     ->label('Jenis')
