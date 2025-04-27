@@ -31,7 +31,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'user',
             'email' => 'user@gmail.com',
             'password' => Hash::make('password'),
-            'role' => 'user'
+            'role' => 'user',
+            'balance' => 100000
         ]);
 
         $getUserModel->invoke($makeUserCommand)::create([
