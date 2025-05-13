@@ -18,6 +18,7 @@ use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -220,7 +221,15 @@ class TransactionResource extends Resource
                     ->default('-'),
             ])
             ->filters([
-                //
+                SelectFilter::make('receiver_user_id')
+                    ->label('Jenis')
+                    ->multiple()
+                    ->options([
+                        'kirim' => 'Kirim',
+                        'terima' => 'Terima',
+                    ])
+                    ->query(fn (Builder $query) => $query->distinct('jenis'))
+                    ->default(['kirim', 'terima']),
             ])
             ->actions([
             ]);
